@@ -33,6 +33,11 @@ def KD(N=9, M1=3, M2=3):
 
     return K, D
 
+def KD(N=9, M1=3, M2=5):
+    RSV = (CLOSE - LLV(LOW, N)) / (HHV(HIGH, N) - LLV(LOW, N)) * 100
+    K = EMA(RSV, (M1 * 2 - 1))
+    E = EMA(K, M2)
+    return K, E
 
 def KE_ML(N=9, M1=3, M2=5, L=4):
     """
