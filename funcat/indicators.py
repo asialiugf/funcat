@@ -45,25 +45,29 @@ def KE_ML(N=9, M1=3, M2=5, L=4):
 
     RSV = (CLOSE - LLV(LOW, N)) / (HHV(HIGH, N) - LLV(LOW, N)) * 100
     K = EMA(RSV, (M1 * 2 - 1))
-    E = EMA(K, 1)
+    E = EMA(K, 2)
 
     RSV1 = (CLOSE - LLV(LOW, N*L1)) / (HHV(HIGH, N*L1) - LLV(LOW, N*L1)) * 100
-    K1 = EMA(RSV, (M1*L1 * 2 - 1))
+    K1 = EMA(RSV1, (M1*L1 * 2 - 1))
     E1 = EMA(K1, M2)
 
     RSV2 = (CLOSE - LLV(LOW, N*L2)) / (HHV(HIGH, N*L2) - LLV(LOW, N*L2)) * 100
-    K2 = EMA(RSV, (M1*L2 * 2 - 1))
+    K2 = EMA(RSV2, (M1*L2 * 2 - 1))
     E2 = EMA(K2, M2*L1)
 
     RSV3 = (CLOSE - LLV(LOW, N*L3)) / (HHV(HIGH, N*L3) - LLV(LOW, N*L3)) * 100
-    K3 EMA(RSV, (M1*L3 * 2 - 1))
+    K3 = EMA(RSV3, (M1*L3 * 2 - 1))
     E3 = EMA(K3, M2*L2)
 
+    """
     RSV4 = (CLOSE - LLV(LOW, N*L4)) / (HHV(HIGH, N*L4) - LLV(LOW, N*L4)) * 100
-    K4 = EMA(RSV, (M1*L4 * 2 - 1))
+    K4 = EMA(RSV4, (M1*L4 * 2 - 1))
     E4 = EMA(K4, M2*L3)
 
     return K, E, K1, E1,  K2, E2, K3, E3, K4, E4
+    """
+
+    return K, E, K1, E1,  K2, E2, K3, E3
 
 
 """
@@ -126,11 +130,14 @@ def MACD_ML(SHORT=12, LONG=26, M=9, L=4):
     DEA3 = EMA(DIFF3, M*L2)
     MACD3 = (DIFF3 - DEA3) * 2
 
+    """
     DIFF4 = EMA(CLOSE, SHORT*L3) - EMA(CLOSE, LONG*L3)
     DEA4 = EMA(DIFF4, M*L3)
     MACD4 = (DIFF4 - DEA4) * 2
 
     return DIFF1, DEA1, MACD1, DIFF2, DEA2, MACD2, DIFF3, DEA3, MACD3, DIFF4, DEA4, MACD4
+    """
+    return DIFF1, DEA1, MACD1, DIFF2, DEA2, MACD2, DIFF3, DEA3, MACD3
 """
 #added by charmi 20171112 end
 """
