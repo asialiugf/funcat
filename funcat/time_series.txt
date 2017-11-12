@@ -1,4 +1,6 @@
 
 class TimeSeries(object): 
 定义了 类：TimeSeries
-类NumericSeries 从TimeSeries类继承过来： NumericSeries(TimeSeries):
+类NumericSeries 从TimeSeries类继承过来： class NumericSeries(TimeSeries):
+class MarketDataSeries(NumericSeries):
+MarketDataSeries 从 NumericSeries 继承过来。
