@@ -1,1 +1,3 @@
 
+class TimeSeries(object): 
+定义了 类：TimeSeries
