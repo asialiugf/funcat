@@ -1,3 +1,4 @@
 
 class TimeSeries(object): 
 定义了 类：TimeSeries
+类NumericSeries 从TimeSeries类继承过来： NumericSeries(TimeSeries):
