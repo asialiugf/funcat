@@ -4,3 +4,148 @@ class TimeSeries(object):
 类NumericSeries 从TimeSeries类继承过来： class NumericSeries(TimeSeries):
 class MarketDataSeries(NumericSeries):
 MarketDataSeries 从 NumericSeries 继承过来。
+
+
+class TimeSeries(object):
+    '''
+    https://docs.python.org/3/library/operator.html
+    '''
+
+    @property                           # 把def series中的series变成属性
+    def series(self):
+        raise NotImplementedError       # 表示这个方法没有实现
+
+    @property                           # 把value变成属性
+    @wrap_formula_exc                   # 这个装饰器，定义在 utils.py中。
+    def value(self):
+        try:
+            return self.series[-1]
+        except IndexError:
+            raise FormulaException("DATA UNAVAILABLE")
+
+    def __len__(self):
+        return len(self.series)
+
+    @wrap_formula_exc
+    def __lt__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        with np.errstate(invalid='ignore'):
+            series = s1 < s2
+        return BoolSeries(series)
+
+    @wrap_formula_exc
+    def __gt__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        with np.errstate(invalid='ignore'):
+            series = s1 > s2
+        return BoolSeries(series)
+
+    @wrap_formula_exc
+    def __eq__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        with np.errstate(invalid='ignore'):
+            series = s1 == s2
+        return BoolSeries(series)
+
+    @wrap_formula_exc
+    def __ne__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        with np.errstate(invalid='ignore'):
+            series = s1 != s2
+        return BoolSeries(series)
+
+    @wrap_formula_exc
+    def __ge__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        with np.errstate(invalid='ignore'):
+            series = s1 >= s2
+        return BoolSeries(series)
+
+    @wrap_formula_exc
+    def __le__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        with np.errstate(invalid='ignore'):
+            series = s1 <= s2
+        return BoolSeries(series)
+
+    @wrap_formula_exc
+    def __sub__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        with np.errstate(invalid='ignore'):
+            series = s1 - s2
+        return NumericSeries(series)
+
+    @wrap_formula_exc
+    def __rsub__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        with np.errstate(invalid='ignore'):
+            series = s2 - s1
+        return NumericSeries(series)
+
+    @wrap_formula_exc
+    def __add__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        with np.errstate(invalid='ignore'):
+            series = s1 + s2
+        return NumericSeries(series)
+
+    @wrap_formula_exc
+    def __radd__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        with np.errstate(invalid='ignore'):
+            series = s2 + s1
+        return NumericSeries(series)
+
+    @wrap_formula_exc
+    def __mul__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        with np.errstate(invalid='ignore'):
+            series = s1 * s2
+        return NumericSeries(series)
+
+    @wrap_formula_exc
+    def __rmul__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        with np.errstate(invalid='ignore'):
+            series = s2 * s1
+        return NumericSeries(series)
+
+    @wrap_formula_exc
+    def __truediv__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        with np.errstate(invalid='ignore'):
+            series = s1 / s2
+        return NumericSeries(series)
+
+    @wrap_formula_exc
+    def __rtruediv__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        with np.errstate(invalid='ignore'):
+            series = s2 / s1
+        return NumericSeries(series)
+
+    __div__ = __truediv__
+
+    def __bool__(self):
+        return len(self) > 0 and bool(self.value)
+
+    def __and__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        return BoolSeries(s1 & s2)
+
+    def __or__(self, other):
+        s1, s2 = fit_series(self.series, get_series(other))
+        return BoolSeries(s1 | s2)
+
+    @wrap_formula_exc
+    def __invert__(self):
+        with np.errstate(invalid='ignore'):
+            series = ~self.series
+        return BoolSeries(series)
+
+    # fix bug in python 2
+    __nonzero__ = __bool__
+
+    def __repr__(self):
+        return str(self.value)
+
